@@ -134,7 +134,7 @@ Silva_CO32_StageII = dict(model_type = 'ML',
                           do_Jysr=True)
 
 # Hamsa's CII parameters from her paper with parameter for George's sim data
-# most of these parameters are just copied directly from TonyLi 2016 parameters, though I think Hamsa's paper mentioned it used Gong's parameters for the most part.. or not 
+# most of these parameters are just copied directly from TonyLi 2016 parameters
 Hamsa_CII = dict(cosmo_model = 'Planck15',
                   model_type = 'ML',
                   model_name = 'Padmanabhan_CII',
@@ -142,7 +142,7 @@ Hamsa_CII = dict(cosmo_model = 'Planck15',
                   nu = 115*u.GHz,       # dummy (from George's CO sim) --> USE 1897 GHz for CII line always!
                   nuObs = 18*u.GHz,     # dummy
                   Mmin = 4e9*u.Msun,    # George's sim used Mmin = 4e9; Hamsa's paper used Mmin = 1e10 h^-1 Msun
-                  Mmax = 1e15*u.Msun,   # try changing fduty?      
+                  Mmax = 1e15*u.Msun,        
                   nM = 5000,
                   nL = 5000,
                   kmin = 1e-2/u.Mpc,

@@ -1,4 +1,4 @@
-# martine's code
+# Martine's original code to load .h5 catalogues
 
 import numpy as np
 

@@ -6,14 +6,14 @@ from . import debug
 import time
 
 #@timeme
-def load_peakpatch_catalogue(halo_info, filetype='.npz', saveHalos=False, saveFolder=None):
+def load_peakpatch_catalogue(halo_info, filetype='.npz', saveHalos=False, saveFolder='/outputs/'):
     """
     Load peak patch halo catalogue into halos class and cosmology into cosmo class
     
     Slightly modified to work with the lim functions, cosmo class split into separate
     function
     
-    When save=True, the function will save the output to saveFolder directory.
+    When save=True, the function will save the Mcen, Msat, cen_pos, sat_pos output to the saveFolder directory.
     
     Default filetype = '.npz'
     Can take filetype = '.h5'
@@ -23,23 +23,20 @@ def load_peakpatch_catalogue(halo_info, filetype='.npz', saveHalos=False, saveFo
     halos : class
         Contains all halo information (position, redshift, etc..)
     """
-    Mcen_file    = '/mnt/raid-cita/echung/surp2020/lim_Clara/outputs/Mcen.dat'
-    Msat_file    = '/mnt/raid-cita/echung/surp2020/lim_Clara/outputs/Msat.dat'
-    cen_pos_file = '/mnt/raid-cita/echung/surp2020/lim_Clara/outputs/cen_pos.dat'
-    sat_pos_file = '/mnt/raid-cita/echung/surp2020/lim_Clara/outputs/sat_pos.dat'    
+    
+    # These are the directories from when saveHalos=True. 
+    
+    Mcen_file    = saveFolder + 'Mcen.dat'    
+    Msat_file    = saveFolder + 'Msat.dat'        
+    cen_pos_file = saveFolder + 'cen_pos.dat'   
+    sat_pos_file = saveFolder + 'sat_pos.dat'        
 
     halos       = empty_table()                      # creates empty class to put any halo info into 
-    print('step2')  
     
     if filetype=='.h5':
-        print('step2.6')
         # Martine's catalogues use these
         from astropy.cosmology import Planck15 as cosmo15
         h = cosmo15.H(0).value/100
-        
-        # to get keys of halo_info:
-        # >>> [key for key in halo_info.keys()] == [file for file in halo_info.file]
-        # ['flux_cen', 'flux_sat', 'mass_cen', 'mass_halo_sat', 'mass_sat', 'nsat_inhalo', 'observation_frequencies', 'xpos_cen', 'xpos_sat', 'ypos_cen', 'ypos_sat', 'zpos_cen', 'zpos_sat']
         
         cen_x_fov = 0.  # set zero for now
         cen_y_fov = 0.
@@ -72,13 +69,16 @@ def load_peakpatch_catalogue(halo_info, filetype='.npz', saveHalos=False, saveFo
                 np.savetxt(sp, (xsat,ysat,zsat))
             
         else:
-            print('Loading mass files... (takes 3 minutes)') 
-            mcen = np.loadtxt(Mcen_file)
-            msat = np.loadtxt(Msat_file)
-            print('Loading position files')
-            xcen, ycen, zcen = np.loadtxt(cen_pos_file)[0], np.loadtxt(cen_pos_file)[1], np.loadtxt(cen_pos_file)[2]
-            xsat, ysat, zsat = np.loadtxt(sat_pos_file)[0], np.loadtxt(sat_pos_file)[1], np.loadtxt(sat_pos_file)[2]
-    
+            try:
+                print('Loading mass files... (takes 3 minutes)') 
+                mcen = np.loadtxt(Mcen_file)
+                msat = np.loadtxt(Msat_file)
+                print('Loading position files...')
+                xcen, ycen, zcen = np.loadtxt(cen_pos_file)[0], np.loadtxt(cen_pos_file)[1], np.loadtxt(cen_pos_file)[2]
+                xsat, ysat, zsat = np.loadtxt(sat_pos_file)[0], np.loadtxt(sat_pos_file)[1], np.loadtxt(sat_pos_file)[2]
+            except IOError:
+                print('Need to set saveHalo=True the first run in order to use saveHalo=False subsequently.')
+        
         halos.Mcen = mcen
         halos.x_pos_cen = xcen
         halos.y_pos_cen = ycen

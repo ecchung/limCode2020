@@ -45,7 +45,8 @@ class LimLam(LineObs):
     '''
     
     #filename = 'limlam_mocker/catalogues/default_catalogue.npz'        # George's default catalogue
-    filename = 'limlam_mocker/catalogues/Martines_galaxy_catalogue.h5'  # Martine's catalogue
+    #filename = 'limlam_mocker/catalogues/COMAP_z4.77-6.21_700Mpc/COMAP_z4.77-6.21_700Mpc_seed_13579.npz'    # One of George's COMAP catalogues
+    filename = '/mnt/raid-cita/echung/surp2020/lim_Clara/limlam_mocker/catalogues/galaxy_catalogue.h5'                      # Catalogue from Martine
     
     def __init__(self,
               catalogue_file=filename,
@@ -115,15 +116,15 @@ class LimLam(LineObs):
         '''
         return llm.params_to_mapinst(self.limlam_params)
         
-    @cached_property # CLARA MADE CHANGE!!
+    @cached_property 
     def halo_info(self):
         '''
         Reads in information about halos from catalogue_file
         '''     
-        if self.catalogue_file.endswith('.h5'):                         #### for .h5 catalogues
-            return  h5py.File(self.catalogue_file, 'r')                 ####
+        if self.catalogue_file.endswith('.h5'):                         # for .h5 catalogues
+            return  h5py.File(self.catalogue_file, 'r')               
         else:
-            return np.load(self.catalogue_file,allow_pickle=True)
+            return np.load(self.catalogue_file,allow_pickle=True)       # for other .npz catalogues
         
     def check_cosmo(self,sim_cosmo,cosmo_model):
         '''
@@ -181,7 +182,7 @@ class LimLam(LineObs):
         else:
             filetype = '.npz'
         unculled_halos = llm.load_peakpatch_catalogue(self.halo_info, filetype=filetype, saveHalos=self.saveHalos)
-        min_mass = self.Mmin.to(u.Msun).value
+        min_mass = self.Mmin.to(u.Msun).value       
         max_mass = self.Mmax.to(u.Msun).value
         if self.halos_nocutoff:
             return unculled_halos
