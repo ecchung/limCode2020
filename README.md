@@ -1,7 +1,7 @@
 # limCode2020
 
 From Clara Chung's SURP 2020 project with R. Bond and Patrick Breysse.
-Original code before any changes made by Clara are in lim_Clara_originals.
+Original code before any changes made by Clara can be obtained from Patrick.
 
 For examples of how to use lim and limlam, see Example_Calcs.ipynb by Patrick. 
 You can find the rest of George's COMAP simulation catalogue at https://www.cita.utoronto.ca/~gstein/data/CO/COMAP_fullvolume/midz/z4.77-6.21_700Mpc/npz/.
